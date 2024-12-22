@@ -7,10 +7,13 @@ export interface UnsplashResponse<T> {
 export interface Collection {
   id: string;
   title: string;
-  cover_photo: {
-    urls: {
-      small: string;
-    };
-    description: string;
-  };
+  description?: string;
+  images: string[];
+  createdAt: Date;
+}
+
+export interface CollectionsState {
+  collections: Collection[];
+  loading: boolean;
+  error: string | null;
 }

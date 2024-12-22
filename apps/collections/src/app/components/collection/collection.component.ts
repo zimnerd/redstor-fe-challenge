@@ -1,46 +1,36 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, ChangeDetectionStrategy, signal, DestroyRef } from '@angular/core';
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { UnsplashService } from 'core-services';
-import { IPhoto } from 'shared-interfaces';
-import { BehaviorSubject } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Collection } from 'shared-interfaces';
+import { addCollection, deleteCollection, loadCollections, selectAllCollections } from 'state-management';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatProgressBarModule, MatCardModule, MatIconModule],
   selector: 'app-collection',
-  templateUrl: './collection.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: `
+    <div *ngIf="collections$ | async as collections">
+      <div *ngFor="let collection of collections">
+        <h2>{{ collection.title }}</h2>
+        <p>{{ collection.description }}</p>
+      </div>
+    </div>
+  `
 })
 export class CollectionComponent implements OnInit {
-  private readonly unsplashService = inject(UnsplashService);
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly destroyRef = inject(DestroyRef);
+  collections$: Observable<Collection[]>;
 
-  readonly photos$ = new BehaviorSubject<IPhoto[]>([]);
-  readonly isLoading$ = new BehaviorSubject<boolean>(false);
-
-  ngOnInit(): void {
-    this.isLoading$.next(true);
-    const collectionId = this.activatedRoute.snapshot.params['collectionId'];
-
-    this.unsplashService
-      .listCollectionPhotos(collectionId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(photos => {
-        this.photos$.next(photos?.response?.results || []);
-        this.isLoading$.next(false);
-      });
+  constructor(private store: Store) {
+    this.collections$ = this.store.select(selectAllCollections);
   }
 
-  handleGotoPhoto(photo: IPhoto) {
-    const collectionId = this.activatedRoute.snapshot.params['collectionId'];
-    return this.router.navigate(['collection', collectionId, 'photo', photo.id]);
+  ngOnInit() {
+    this.store.dispatch(loadCollections());
+  }
+
+  addCollection(collection: Collection) {
+    this.store.dispatch(addCollection({ collection }));
+  }
+
+  deleteCollection(id: string) {
+    this.store.dispatch(deleteCollection({ id }));
   }
 }

@@ -1,27 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducers } from '../state-management/store';
+import { EffectsModule } from '@ngrx/effects';
+import { COLLECTIONS_FEATURE_KEY, collectionsReducer } from '../state-management/store/collections';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    StoreModule.forFeature('collections', reducers),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-      logOnly: false,
-      autoPause: true
-    })
-  ],
-  declarations: [],
-  providers: []
+  imports: [StoreModule.forFeature(COLLECTIONS_FEATURE_KEY, collectionsReducer), EffectsModule.forFeature([])]
 })
-export class StateModule {
-  static forRoot(): ModuleWithProviders<StateModule> {
-    return {
-      ngModule: StateModule,
-      providers: []
-    };
-  }
-}
+export class StateModule {}

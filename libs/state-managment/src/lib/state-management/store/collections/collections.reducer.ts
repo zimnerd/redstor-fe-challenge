@@ -1,18 +1,38 @@
 import { createReducer, on } from '@ngrx/store';
-import { ICollection } from 'shared-interfaces';
-import { loadCollectionsSuccess } from './collections.actions';
+import { CollectionsState } from 'shared-interfaces';
+import * as CollectionsActions from './collections.actions';
 
-export const collectionsFeatureKey = 'collections';
+export const COLLECTIONS_FEATURE_KEY = 'collections';
 
-export interface State {
-  collections: ICollection[];
-}
-
-export const initialState: State = {
-  collections: []
+export const initialState: CollectionsState = {
+  collections: [],
+  loading: false,
+  error: null
 };
 
-export const reducer = createReducer(
+export const collectionsReducer = createReducer(
   initialState,
-  on(loadCollectionsSuccess, (state, { collections }) => ({ ...state, collections }))
+  on(CollectionsActions.loadCollections, state => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(CollectionsActions.loadCollectionsSuccess, (state, { collections }) => ({
+    ...state,
+    collections,
+    loading: false
+  })),
+  on(CollectionsActions.loadCollectionsFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
+  })),
+  on(CollectionsActions.addCollection, (state, { collection }) => ({
+    ...state,
+    collections: [...state.collections, collection]
+  })),
+  on(CollectionsActions.deleteCollection, (state, { id }) => ({
+    ...state,
+    collections: state.collections.filter(collection => collection.id !== id)
+  }))
 );
