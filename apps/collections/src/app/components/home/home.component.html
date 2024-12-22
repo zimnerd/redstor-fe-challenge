@@ -11,44 +11,55 @@
 <div class="layout-container">
   <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
 
-  <div class="gallery">
-    @if ((collections$ | async)?.length === 0) {
-      <p>No collections found.</p>
-    } @else {
-      @for (collection of collections$ | async; track collection.id) {
-        <mat-card
-          class="gallery-item thumbnails"
-          [routerLink]="['/collection', collection.id]"
-          [attr.aria-label]="'View ' + collection.title + ' collection'"
-        >
-          <img
-            mat-card-image
-            [src]="collection.cover_photo.urls.small"
-            [alt]="collection.cover_photo.description || collection.title"
-            loading="lazy"
-          />
+  <div class="collections-grid" *ngIf="!(isLoading$ | async)">
+    <ng-container *ngIf="(collections$ | async)?.length; else noCollections">
+      <div class="gallery">
+        @for (collection of collections$ | async; track collection.id) {
+          <mat-card
+            class="gallery-item thumbnails"
+            [routerLink]="['/collection', collection.id]"
+            [attr.aria-label]="'View ' + collection.title + ' collection'"
+          >
+            <img
+              mat-card-image
+              [src]="collection.cover_photo.urls.small"
+              [alt]="collection.cover_photo.description || collection.title"
+              loading="lazy"
+            />
+            <mat-card-content>
+              <p class="title">{{ collection.title }}</p>
+            </mat-card-content>
+            @if (collection.preview_photos?.length) {
+              <div class="preview-grid">
+                @for (photo of collection.preview_photos?.slice(0, 4); track photo.id) {
+                  <img
+                    [src]="photo.urls.thumb"
+                    [alt]="collection.title"
+                    class="preview-thumb"
+                    tabindex="0"
+                    role="button"
+                  >
+                }
+              </div>
+            }
+          </mat-card>
+        }
+      </div>
+    </ng-container>
+
+    <ng-template #noCollections>
+      <div class="no-results">
+        <mat-card>
           <mat-card-content>
-            <p class="title">{{ collection.title }}</p>
+            <p>No collections found. Please try adjusting your search or check back later.</p>
           </mat-card-content>
-          @if (collection.preview_photos?.length) {
-            <div class="preview-grid">
-              @for (photo of collection.preview_photos?.slice(0, 4); track photo.id) {
-                <img
-                  [src]="photo.urls.thumb"
-                  [alt]="collection.title"
-                  class="preview-thumb"
-                  tabindex="0"
-                  role="button"
-                >
-              }
-            </div>
-          }
         </mat-card>
-      }
-    }
+      </div>
+    </ng-template>
   </div>
 
-  <div class="pagination-container">
+  <!-- Only show pagination if we have results -->
+  <div class="pagination-container" *ngIf="(collections$ | async)?.length">
     <mat-paginator
       [length]="totalItems"
       [pageSize]="perPage"
