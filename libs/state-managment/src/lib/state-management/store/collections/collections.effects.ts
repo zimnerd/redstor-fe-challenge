@@ -1,28 +1,28 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs';
+import { map, catchError, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import * as CollectionsActions from './collections.actions';
 import { UnsplashService } from 'core-services';
-import { loadCollections, loadCollectionsSuccess, loadCollectionsFailure } from './collections.actions';
 
 @Injectable()
 export class CollectionsEffects {
-  private readonly actions$: Actions = inject(Actions);
-  private readonly unsplash: UnsplashService = inject(UnsplashService);
-
   loadCollections$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadCollections),
-      switchMap(() =>
-        this.unsplash
-          .listCollections()
-          .pipe(
-            map(result =>
-              result.type === 'success'
-                ? loadCollectionsSuccess({ collections: result.response.results, total: result.response.total, page: 1 })
-                : loadCollectionsFailure()
-            )
-          )
+      ofType(CollectionsActions.loadCollections),
+      switchMap(({ page, perPage }) =>
+        this.unsplashService.listCollections(page, perPage).pipe(
+          map(response =>
+            CollectionsActions.loadCollectionsSuccess({
+              collections: response.response?.results || [],
+              total: response.response?.total || 0
+            })
+          ),
+          catchError(error => of(CollectionsActions.loadCollectionsFailure({ error: error.message })))
+        )
       )
     )
   );
+
+  constructor(private actions$: Actions, private unsplashService: UnsplashService) {}
 }

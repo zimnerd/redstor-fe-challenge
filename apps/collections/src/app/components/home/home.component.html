@@ -9,33 +9,40 @@
 </nav>
 
 <div class="layout-container">
-  <!-- Using Angular 17's built-in loading state management -->
-  @if (isLoading) {
-    <mat-progress-bar mode="indeterminate" aria-label="Loading collections"></mat-progress-bar>
-  }
+  <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
 
-  <!-- Using new Angular 17 control flow and improved responsive layout -->
   <div class="gallery">
-    @if (collections.length === 0 && !isLoading) {
+    @if ((collections$ | async)?.length === 0) {
       <p>No collections found.</p>
+    } @else {
+      @for (collection of collections$ | async; track collection.id) {
+        <mat-card
+          class="gallery-item thumbnails"
+          [routerLink]="['/collection', collection.id]"
+          [attr.aria-label]="'View ' + collection.title + ' collection'"
+        >
+          <img
+            mat-card-image
+            [src]="collection.cover_photo.urls.small"
+            [alt]="collection.cover_photo.description || collection.title"
+            loading="lazy"
+          />
+          <mat-card-content>
+            <p class="title">{{ collection.title }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
     }
+  </div>
 
-    @for (collection of collections; track collection.id) {
-      <mat-card
-        class="gallery-item thumbnails"
-        [routerLink]="['/collection', collection.id]"
-        [attr.aria-label]="'View ' + collection.title + ' collection'"
-      >
-        <img
-          mat-card-image
-          [src]="collection.cover_photo.urls.small"
-          [alt]="collection.cover_photo.description || collection.title"
-          loading="lazy"
-        />
-        <mat-card-content>
-          <p class="title">{{ collection.title }}</p>
-        </mat-card-content>
-      </mat-card>
-    }
+  <div class="pagination-container">
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="perPage"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageIndex]="(currentPage$ | async) || 0"
+      (page)="onPageChange($event)"
+      aria-label="Select page">
+    </mat-paginator>
   </div>
 </div>

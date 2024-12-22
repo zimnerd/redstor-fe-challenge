@@ -1,13 +1,13 @@
-export * from './collections.actions';
-export * from './collections.reducer';
 export * from './collections.selectors';
+export * from './collections.reducer';
+export * from './collections.actions';
+export * from './collections.effects';
 
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { CollectionsState } from 'shared-interfaces';
-import { collectionsReducer } from './collections.reducer';
+import { collectionsReducer, ICollectionsState } from './collections.reducer';
 
 export interface State {
-  collections: CollectionsState;
+  collections: ICollectionsState;
 }
 
 export const reducers: ActionReducerMap<State> = {

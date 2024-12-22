@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Collection } from 'shared-interfaces';
+import { ICollection } from 'shared-interfaces';
 import { addCollection, deleteCollection, loadCollections, selectAllCollections } from 'state-management';
 
 @Component({
@@ -16,21 +16,21 @@ import { addCollection, deleteCollection, loadCollections, selectAllCollections 
   `
 })
 export class CollectionComponent implements OnInit {
-  collections$: Observable<Collection[]>;
+  collections$: Observable<ICollection[]>;
 
   constructor(private store: Store) {
     this.collections$ = this.store.select(selectAllCollections);
   }
 
   ngOnInit() {
-    this.store.dispatch(loadCollections());
+    this.store.dispatch(loadCollections({ page: 1, perPage: 10 }));
   }
 
-  addCollection(collection: Collection) {
+  addCollection(collection: ICollection) {
     this.store.dispatch(addCollection({ collection }));
   }
 
-  deleteCollection(id: string) {
+  deleteCollection(id: number) {
     this.store.dispatch(deleteCollection({ id }));
   }
 }

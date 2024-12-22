@@ -1,11 +1,14 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { COLLECTIONS_FEATURE_KEY } from './collections.reducer';
-import { CollectionsState } from 'shared-interfaces';
+import { ICollectionsState } from './collections.reducer';
 
-export const selectCollectionsState = createFeatureSelector<CollectionsState>(COLLECTIONS_FEATURE_KEY);
+export const selectCollectionsState = createFeatureSelector<ICollectionsState>('collections');
 
-export const selectAllCollections = createSelector(selectCollectionsState, state => state.collections);
+export const selectAllCollections = createSelector(selectCollectionsState, (state: ICollectionsState) => state.collections);
 
-export const selectCollectionsLoading = createSelector(selectCollectionsState, state => state.loading);
+export const selectCollectionsLoading = createSelector(selectCollectionsState, (state: ICollectionsState) => state.loading);
+
+export const selectCurrentPage = createSelector(selectCollectionsState, (state: ICollectionsState) => state.currentPage);
+
+export const selectTotalPages = createSelector(selectCollectionsState, (state: ICollectionsState) => state.totalPages);
 
 export const selectCollectionsError = createSelector(selectCollectionsState, state => state.error);

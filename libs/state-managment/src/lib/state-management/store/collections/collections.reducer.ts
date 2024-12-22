@@ -1,26 +1,40 @@
 import { createReducer, on } from '@ngrx/store';
-import { CollectionsState } from 'shared-interfaces';
+import { ICollection } from 'shared-interfaces';
 import * as CollectionsActions from './collections.actions';
 
 export const COLLECTIONS_FEATURE_KEY = 'collections';
 
-export const initialState: CollectionsState = {
+export interface ICollectionsState {
+  collections: ICollection[];
+  loading: boolean;
+  error: string | null;
+  currentPage: number;
+  perPage: number;
+  totalPages: number;
+}
+
+export const initialState: ICollectionsState = {
   collections: [],
   loading: false,
-  error: null
+  error: null,
+  currentPage: 1,
+  perPage: 10,
+  totalPages: 0
 };
 
 export const collectionsReducer = createReducer(
   initialState,
-  on(CollectionsActions.loadCollections, state => ({
+  on(CollectionsActions.loadCollections, (state, { page, perPage }) => ({
     ...state,
     loading: true,
-    error: null
+    error: null,
+    currentPage: page
   })),
-  on(CollectionsActions.loadCollectionsSuccess, (state, { collections }) => ({
+  on(CollectionsActions.loadCollectionsSuccess, (state, { collections, total }) => ({
     ...state,
     collections,
-    loading: false
+    loading: false,
+    totalPages: Math.ceil(total / state.perPage)
   })),
   on(CollectionsActions.loadCollectionsFailure, (state, { error }) => ({
     ...state,

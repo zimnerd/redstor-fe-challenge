@@ -24,3 +24,13 @@
     object-fit: cover;
   }
 }
+
+.pagination-container {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+::ng-deep .mat-mdc-paginator {
+  background: transparent;
+}

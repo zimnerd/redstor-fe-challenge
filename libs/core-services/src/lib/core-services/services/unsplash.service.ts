@@ -16,7 +16,10 @@ export class UnsplashService {
     this.api = createApi({ accessKey: unsplashAccessKey });
   }
 
-  listCollections(): Observable<
+  listCollections(
+    page: number,
+    perPage: number
+  ): Observable<
     ApiResponse<{
       results: ICollection[];
       total: number;
