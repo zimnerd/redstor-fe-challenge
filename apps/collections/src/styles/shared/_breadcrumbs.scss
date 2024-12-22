@@ -1,0 +1,25 @@
+.breadcrumbs {
+  padding: 1rem;
+  background: #f5f5f5;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+  a {
+    color: #1976d2;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  span {
+    margin: 0 0.5rem;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .active {
+    color: rgba(0, 0, 0, 0.87);
+    pointer-events: none;
+  }
+}

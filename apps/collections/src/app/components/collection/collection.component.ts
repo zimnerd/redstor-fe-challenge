@@ -5,7 +5,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { IPhoto } from 'shared-interfaces';
@@ -24,7 +25,16 @@ interface AppState {
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.css'],
   standalone: true,
-  imports: [CommonModule, MatToolbarModule, MatProgressBarModule, MatCardModule, MatIconModule, RouterModule, MatPaginatorModule]
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatIconModule,
+    RouterModule,
+    MatPaginatorModule,
+    MatButtonModule
+  ]
 })
 export class CollectionComponent implements OnInit {
   isLoading$: Observable<boolean>;
@@ -34,7 +44,7 @@ export class CollectionComponent implements OnInit {
   perPage = 10;
   currentCollectionId: string | null = null;
 
-  constructor(private store: Store<AppState>, private route: ActivatedRoute) {
+  constructor(private store: Store<AppState>, private route: ActivatedRoute, private router: Router) {
     this.isLoading$ = this.store.select(selectCollectionsLoading);
     this.photos$ = this.store.select(selectCollectionPhotos);
     this.total$ = this.store.select(selectTotal);
@@ -74,6 +84,8 @@ export class CollectionComponent implements OnInit {
   }
 
   handleGotoPhoto(photo: IPhoto): void {
-    console.log('Navigate to photo:', photo);
+    if (this.currentCollectionId) {
+      this.router.navigate(['collection', this.currentCollectionId, 'photo', photo.id]);
+    }
   }
 }

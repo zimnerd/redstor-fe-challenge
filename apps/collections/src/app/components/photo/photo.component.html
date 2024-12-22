@@ -1,53 +1,60 @@
-<!-- toDo Could you optimise this piece of code? -->
-<mat-toolbar>
+<mat-toolbar color="primary">
   <span>Redstor FE Challenger</span>
 </mat-toolbar>
 
-<!-- toDo Could you optimise this piece of code? -->
-<div class="breadcrumbs">
+<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
   <a routerLink="/"><span>Collections</span></a>
   <span>></span>
-  <a (click)="handleGotoCollection()"><span>Collection</span></a>
+  <a [routerLink]="['/collection', collectionId]" role="link" tabindex="0">
+    <span>Collection</span>
+  </a>
   <span>></span>
   <a class="active"><span>Photo</span></a>
-</div>
+</nav>
 
 <div class="layout-container">
-  <!-- toDo Could you optimise this piece of code? -->
-  <mat-progress-bar *ngIf="isLoading$ | async"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
 
-  <div class="gallery" fxLayout.sm="column">
-    <!-- toDO Could you improve the styling to be responsive? -->
-    <mat-card *ngIf="photo$ | async as photo" class="preview">
-      <!-- toDO Why is throwing some console errors? -->
-
+  <div class="photo-container">
+    <mat-card *ngIf="photo$ | async as photo" class="photo-card">
       <mat-card-header>
-        <img mat-card-avatar [src]="photo.user.profile_image.medium" />
-        <mat-card-title>{{ photo.user.first_name }} {{ photo.user.last_name }}</mat-card-title>
-        <mat-card-subtitle *ngIf="photo.user.location">
+        <img
+          mat-card-avatar
+          [src]="photo.user?.profile_image?.medium"
+          [alt]="photo.user?.name + '\'s profile picture'"
+          *ngIf="photo.user?.profile_image"
+        />
+        <mat-card-title>{{ photo.user?.first_name }} {{ photo.user?.last_name }}</mat-card-title>
+        <mat-card-subtitle *ngIf="photo.user?.location">
           <mat-icon inline>where_to_vote</mat-icon>
-          {{ photo.user.location }}
+          {{ photo.user?.location }}
         </mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
         <div>
           <div>
-            <!-- toDO Is there another way to do this operation? -->
-            <p>{{ photo.description?.charAt(0)?.toUpperCase() }}{{ photo.description?.slice(1) }}</p>
+            <p *ngIf="photo.description">
+              {{ photo.description?.charAt(0)?.toUpperCase() }}{{ photo.description?.slice(1) }}
+            </p>
           </div>
           <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="end">
             <p fxLayoutAlign="center">
               <mat-icon inline>favorite</mat-icon>
-              {{ photo.likes }} likes &nbsp;|&nbsp;&nbsp;
+              {{ photo.likes || 0 }} likes &nbsp;|&nbsp;&nbsp;
               <mat-icon inline>visibility</mat-icon>
-              {{ photo.views }} views
+              {{ photo.views || 0 }} views
             </p>
           </div>
         </div>
       </mat-card-content>
 
-      <img mat-card-image [src]="photo.urls.full" [alt]="photo.alt_description" />
+      <img
+        mat-card-image
+        *ngIf="photo.urls?.full"
+        [src]="photo.urls?.full"
+        [alt]="photo.alt_description || 'Photo'"
+      />
     </mat-card>
   </div>
 </div>

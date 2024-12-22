@@ -16,10 +16,12 @@
       <mat-card class="gallery-item" (click)="handleGotoPhoto(photo)">
         <img mat-card-image [src]="photo.urls.small" [alt]="photo.alt_description" loading="lazy" />
         <mat-card-content>
-          <p class="likes-counter">
-            <mat-icon aria-hidden="true">favorite</mat-icon>
-            <span>{{ photo.likes }} likes</span>
-          </p>
+          <div class="photo-info">
+            <button mat-icon-button class="favorite-button" aria-label="Like photo">
+              <mat-icon class="liked">favorite</mat-icon>
+            </button>
+            <span class="likes-count">{{ photo.likes | number }}</span>
+          </div>
         </mat-card-content>
       </mat-card>
     </ng-container>

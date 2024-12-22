@@ -26,9 +26,11 @@ export class PhotoComponent implements OnInit {
 
   readonly photo$: BehaviorSubject<IPhoto> = new BehaviorSubject<IPhoto>({} as IPhoto);
   readonly isLoading$: Observable<boolean> = this.photo$.pipe(map(p => !p));
+  collectionId: string | null = null;
 
   ngOnInit(): void {
     const photoId = this.activatedRoute.snapshot.params['photoId'];
+    this.collectionId = this.activatedRoute.snapshot.params['collectionId'];
 
     this.unsplashService
       .getPhoto(photoId)

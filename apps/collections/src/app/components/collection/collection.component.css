@@ -53,3 +53,34 @@
 mat-progress-bar {
   margin-bottom: 1rem;
 }
+
+.photo-info {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 0 0 4px 4px;
+}
+
+.favorite-button {
+  color: #666;
+  transition: transform 0.2s ease;
+}
+
+.favorite-button:hover {
+  transform: scale(1.1);
+}
+
+.favorite-button .mat-icon.liked {
+  color: #f44336;
+}
+
+.likes-count {
+  margin-left: 4px;
+  font-weight: 500;
+  color: #666;
+}
+
+.gallery-item:hover .photo-info {
+  background: rgba(0, 0, 0, 0.05);
+}
