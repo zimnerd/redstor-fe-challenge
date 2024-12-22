@@ -25,16 +25,25 @@ export class UnsplashService {
       total: number;
     }>
   > {
-    return from(this.api.collections.list({}));
+    return from(
+      this.api.collections.list({
+        page,
+        perPage
+      })
+    );
   }
 
-  listCollectionPhotos(id: string): Observable<
+  listCollectionPhotos(
+    id: string,
+    page = 1,
+    perPage = 10
+  ): Observable<
     ApiResponse<{
       results: IPhoto[];
       total: number;
     }>
   > {
-    return from(this.api.collections.getPhotos({ collectionId: id }));
+    return from(this.api.collections.getPhotos({ collectionId: id, page, perPage }));
   }
 
   getPhoto(id: string): Observable<ApiResponse<Full>> {

@@ -1,36 +1,79 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ICollection } from 'shared-interfaces';
-import { addCollection, deleteCollection, loadCollections, selectAllCollections } from 'state-management';
+import { Store } from '@ngrx/store';
+import { IPhoto } from 'shared-interfaces';
+import { loadCollectionPhotos, selectCollectionsLoading, selectCollectionPhotos, selectTotal } from 'state-management';
+
+interface AppState {
+  collections: {
+    loading: boolean;
+    photos: IPhoto[];
+    total: number;
+  };
+}
 
 @Component({
   selector: 'app-collection',
-  template: `
-    <div *ngIf="collections$ | async as collections">
-      <div *ngFor="let collection of collections">
-        <h2>{{ collection.title }}</h2>
-        <p>{{ collection.description }}</p>
-      </div>
-    </div>
-  `
+  templateUrl: './collection.component.html',
+  styleUrls: ['./collection.component.css'],
+  standalone: true,
+  imports: [CommonModule, MatToolbarModule, MatProgressBarModule, MatCardModule, MatIconModule, RouterModule, MatPaginatorModule]
 })
 export class CollectionComponent implements OnInit {
-  collections$: Observable<ICollection[]>;
+  isLoading$: Observable<boolean>;
+  photos$: Observable<IPhoto[]>;
+  total$: Observable<number>;
+  pageSizeOptions = [10, 20, 30];
+  perPage = 10;
+  currentCollectionId: string | null = null;
 
-  constructor(private store: Store) {
-    this.collections$ = this.store.select(selectAllCollections);
+  constructor(private store: Store<AppState>, private route: ActivatedRoute) {
+    this.isLoading$ = this.store.select(selectCollectionsLoading);
+    this.photos$ = this.store.select(selectCollectionPhotos);
+    this.total$ = this.store.select(selectTotal);
   }
 
-  ngOnInit() {
-    this.store.dispatch(loadCollections({ page: 1, perPage: 10 }));
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.currentCollectionId = params.get('collectionId');
+      if (this.currentCollectionId) {
+        this.loadPhotos(1, this.perPage);
+      }
+    });
   }
 
-  addCollection(collection: ICollection) {
-    this.store.dispatch(addCollection({ collection }));
+  loadPhotos(page: number, perPage = this.perPage) {
+    if (this.currentCollectionId) {
+      this.store.dispatch(
+        loadCollectionPhotos({
+          collectionId: this.currentCollectionId,
+          page,
+          perPage: Math.min(perPage, 36) // Limit max items per page
+        })
+      );
+    }
   }
 
-  deleteCollection(id: number) {
-    this.store.dispatch(deleteCollection({ id }));
+  onPageChange(event: { pageIndex: number; pageSize: number }) {
+    const newPage = event.pageIndex + 1;
+    const newPerPage = Math.min(event.pageSize, 36);
+
+    if (newPerPage !== this.perPage) {
+      this.perPage = newPerPage;
+      this.loadPhotos(1, newPerPage);
+    } else {
+      this.loadPhotos(newPage, this.perPage);
+    }
+  }
+
+  handleGotoPhoto(photo: IPhoto): void {
+    console.log('Navigate to photo:', photo);
   }
 }

@@ -7,8 +7,17 @@ import { RouterModule } from '@angular/router';
 import { ICollection } from 'shared-interfaces';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { loadCollections, selectAllCollections, selectCollectionsLoading, selectCurrentPage, selectTotalPages } from 'state-management';
+import {
+  loadCollections,
+  selectAllCollections,
+  selectCollectionsLoading,
+  selectCurrentPage,
+  selectTotalPages,
+  selectTotal
+} from 'state-management';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 
 @Component({
   selector: 'app-home',
@@ -24,15 +33,15 @@ export class HomeComponent implements OnInit {
   totalPages$ = this.store.select(selectTotalPages);
   pageSizeOptions = [10, 20, 30]; // Unsplash max is 30 per page
   perPage = 10;
-  totalItems = 0; // Track total number of items
+  totalItems = 0;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private dialog: MatDialog) {
     this.collections$ = this.store.select(selectAllCollections);
     this.isLoading$ = this.store.select(selectCollectionsLoading);
 
-    // Subscribe to total pages to calculate total items
-    this.totalPages$.subscribe(totalPages => {
-      this.totalItems = totalPages * this.perPage;
+    // Use selector instead of accessing state directly
+    this.store.select(selectTotal).subscribe(total => {
+      this.totalItems = total || 0;
     });
   }
 
@@ -41,22 +50,39 @@ export class HomeComponent implements OnInit {
   }
 
   loadCollections(page: number, perPage = this.perPage) {
-    // Ensure page is within valid range
     if (page < 1) page = 1;
-    this.store.dispatch(loadCollections({ page, perPage }));
+
+    const maxPages = Math.ceil(this.totalItems / perPage);
+    if (maxPages > 0 && page > maxPages) {
+      page = maxPages;
+    }
+
+    this.store.dispatch(
+      loadCollections({
+        page,
+        perPage: Math.min(perPage, 30) // Ensure we respect the 30 item limit
+      })
+    );
   }
 
   onPageChange(event: { pageIndex: number; pageSize: number }) {
     const newPage = event.pageIndex + 1;
-    const newPerPage = event.pageSize;
+    const newPerPage = Math.min(event.pageSize, 30);
 
     if (newPerPage !== this.perPage) {
-      // If page size changed, reset to first page
       this.perPage = newPerPage;
       this.loadCollections(1, newPerPage);
     } else {
-      // Otherwise just load the requested page
       this.loadCollections(newPage, this.perPage);
     }
+  }
+
+  openPreview(photo: any) {
+    this.dialog.open(PreviewPopupComponent, {
+      data: photo,
+      panelClass: 'preview-dialog',
+      maxWidth: '95vw',
+      maxHeight: '95vh'
+    });
   }
 }

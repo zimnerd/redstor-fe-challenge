@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as CollectionsActions from './collections.actions';
 import { UnsplashService } from 'core-services';
@@ -19,6 +19,24 @@ export class CollectionsEffects {
             })
           ),
           catchError(error => of(CollectionsActions.loadCollectionsFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+
+  loadCollectionPhotos$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CollectionsActions.loadCollectionPhotos),
+      switchMap(({ collectionId, page, perPage }) =>
+        this.unsplashService.listCollectionPhotos(collectionId.toString(), page, perPage).pipe(
+          map(response => {
+            if (response.type !== 'success') throw new Error('Failed to load photos');
+            return CollectionsActions.loadCollectionPhotosSuccess({
+              photos: response.response.results,
+              total: response.response.total
+            });
+          }),
+          catchError(error => of(CollectionsActions.loadCollectionPhotosFailure({ error: error.message })))
         )
       )
     )

@@ -34,3 +34,31 @@
 ::ng-deep .mat-mdc-paginator {
   background: transparent;
 }
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+
+  .preview-thumb {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+// Add to your global styles or component styles
+.preview-dialog {
+  .mat-mdc-dialog-container {
+    padding: 0;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.9);
+  }
+}

@@ -1,31 +1,36 @@
-<!-- toDo Could you optimise this piece of code? -->
-<mat-toolbar>
+<mat-toolbar color="primary">
   <span>Redstor FE Challenger</span>
 </mat-toolbar>
 
-<!-- toDo Could you optimise this piece of code? -->
-<div class="breadcrumbs">
-  <a routerLink="/"><span>Collections</span></a>
-  <span>></span>
-  <a class="active"><span>Collection</span></a>
-</div>
+<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+  <a routerLink="/" aria-label="Go to Collections">Collections</a>
+  <span aria-hidden="true">›</span>
+  <span class="active">Collection</span>
+</nav>
 
 <div class="layout-container">
-  <!-- toDo Could you optimise this piece of code? -->
-  <mat-progress-bar *ngIf="isLoading$ | async"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
 
   <div class="gallery">
-    <!-- toDO Could you improve the styling to be responsive? -->
     <ng-container *ngFor="let photo of photos$ | async">
-      <mat-card class="gallery-item thumbnails" (click)="handleGotoPhoto(photo)">
-        <img mat-card-image [src]="photo.urls.small" [alt]="photo.alt_description" />
-        <mat-card-content fxLayout="row" fxLayoutAlign="end" fxLayoutGap="12px">
-          <p>
-            <mat-icon inline>favorite</mat-icon>
-            {{ photo.likes }} likes
+      <mat-card class="gallery-item" (click)="handleGotoPhoto(photo)">
+        <img mat-card-image [src]="photo.urls.small" [alt]="photo.alt_description" loading="lazy" />
+        <mat-card-content>
+          <p class="likes-counter">
+            <mat-icon aria-hidden="true">favorite</mat-icon>
+            <span>{{ photo.likes }} likes</span>
           </p>
         </mat-card-content>
       </mat-card>
     </ng-container>
   </div>
+
+  <mat-paginator
+    [length]="total$ | async"
+    [pageSize]="perPage"
+    [pageSizeOptions]="pageSizeOptions"
+    [showFirstLastButtons]="true"
+    (page)="onPageChange($event)"
+    aria-label="Select page">
+  </mat-paginator>
 </div>

@@ -1,25 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
-import { ICollection } from 'shared-interfaces';
+import { ICollectionsState } from 'shared-interfaces';
 import * as CollectionsActions from './collections.actions';
-
-export const COLLECTIONS_FEATURE_KEY = 'collections';
-
-export interface ICollectionsState {
-  collections: ICollection[];
-  loading: boolean;
-  error: string | null;
-  currentPage: number;
-  perPage: number;
-  totalPages: number;
-}
 
 export const initialState: ICollectionsState = {
   collections: [],
+  photos: [],
   loading: false,
   error: null,
   currentPage: 1,
   perPage: 10,
-  totalPages: 0
+  totalPages: 0,
+  total: 0
 };
 
 export const collectionsReducer = createReducer(
@@ -34,7 +25,8 @@ export const collectionsReducer = createReducer(
     ...state,
     collections,
     loading: false,
-    totalPages: Math.ceil(total / state.perPage)
+    total,
+    totalPages: Math.ceil(total / (state.perPage || 10))
   })),
   on(CollectionsActions.loadCollectionsFailure, (state, { error }) => ({
     ...state,
@@ -48,5 +40,20 @@ export const collectionsReducer = createReducer(
   on(CollectionsActions.deleteCollection, (state, { id }) => ({
     ...state,
     collections: state.collections.filter(collection => collection.id !== id)
+  })),
+  on(CollectionsActions.loadCollectionPhotos, state => ({
+    ...state,
+    loading: true,
+    error: null
+  })),
+  on(CollectionsActions.loadCollectionPhotosSuccess, (state, { photos }) => ({
+    ...state,
+    photos,
+    loading: false
+  })),
+  on(CollectionsActions.loadCollectionPhotosFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
   }))
 );

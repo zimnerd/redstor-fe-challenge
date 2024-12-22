@@ -1,4 +1,4 @@
-import { ICollectionsState } from './collections/collections.reducer';
+import { ICollectionsState } from 'shared-interfaces';
 
 export interface AppState {
   collections: ICollectionsState;

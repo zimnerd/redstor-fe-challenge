@@ -30,6 +30,19 @@
           <mat-card-content>
             <p class="title">{{ collection.title }}</p>
           </mat-card-content>
+          @if (collection.preview_photos?.length) {
+            <div class="preview-grid">
+              @for (photo of collection.preview_photos?.slice(0, 4); track photo.id) {
+                <img
+                  [src]="photo.urls.thumb"
+                  [alt]="collection.title"
+                  class="preview-thumb"
+                  tabindex="0"
+                  role="button"
+                >
+              }
+            </div>
+          }
         </mat-card>
       }
     }

@@ -8,6 +8,7 @@ import { appRoutes } from './app.routes';
 import { CollectionsEffects, collectionsReducer, metaReducers, reducers } from 'state-management';
 import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
+import { MatDialogModule } from '@angular/material/dialog';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimations(),
     provideStore({ collections: collectionsReducer }),
-    provideEffects(CollectionsEffects)
+    provideEffects(CollectionsEffects),
+    importProvidersFrom(MatDialogModule)
   ]
 };
