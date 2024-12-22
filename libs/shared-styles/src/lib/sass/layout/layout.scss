@@ -1,0 +1,56 @@
+.mat-app-background {
+  background-color: #e3e3e3;
+}
+
+.mat-toolbar {
+  span,
+  button {
+    margin: 0 1rem 0 0;
+  }
+}
+
+.breadcrumbs {
+  background-color: rgb(7 174 197 / 20%);
+
+  a {
+    padding: 0 16px;
+    line-height: 36px;
+    cursor: pointer;
+    text-decoration: none;
+
+    &.active {
+      span {
+        cursor: initial;
+        font-weight: 500;
+      }
+    }
+
+    span {
+      color: #4d4d4d;
+    }
+  }
+}
+
+.gallery {
+  max-width: 86vw;
+  margin: 0 auto;
+  padding: 12px;
+  place-content: center;
+
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+
+  .gallery-item {
+    margin: 12px;
+    border-radius: 12px;
+    background-color: #fafafa;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 8px 8px 8px rgba(0, 0, 0, 0.2), 0 8px 8px 0 rgba(0, 0, 0, 0.14), 0 8px 8px 0 rgba(0, 0, 0, 0.12) !important;
+      transform: translate3d(0, 0, 0);
+      transition: background 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+}

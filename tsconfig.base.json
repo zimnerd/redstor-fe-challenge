@@ -16,6 +16,7 @@
       "core-services": ["libs/core-services/src/index.ts"],
       "shared-interfaces": ["libs/shared-interfaces/src/index.ts"],
       "shared-models": ["libs/shared-models/src/index.ts"],
+      "shared-styles": ["libs/shared-styles/src/index.ts"],
       "state-management": ["libs/state-managment/src/index.ts"]
     }
   }

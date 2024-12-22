@@ -23,7 +23,7 @@ interface AppState {
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.css'],
+  styleUrls: ['./collection.component.scss'],
   standalone: true,
   imports: [
     CommonModule,

@@ -17,7 +17,6 @@ import {
 } from 'state-management';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 
 @Component({
   selector: 'app-home',
@@ -75,14 +74,5 @@ export class HomeComponent implements OnInit {
     } else {
       this.loadCollections(newPage, this.perPage);
     }
-  }
-
-  openPreview(photo: any) {
-    this.dialog.open(PreviewPopupComponent, {
-      data: photo,
-      panelClass: 'preview-dialog',
-      maxWidth: '95vw',
-      maxHeight: '95vh'
-    });
   }
 }

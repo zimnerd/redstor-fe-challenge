@@ -1,0 +1,17 @@
+{
+  "name": "shared-styles",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/shared-styles/src",
+  "prefix": "lib",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/libs/shared-styles"],
+      "options": {
+        "project": "libs/shared-styles/ng-package.json"
+      }
+    }
+  },
+  "tags": []
+}

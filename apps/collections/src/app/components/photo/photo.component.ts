@@ -16,6 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [CommonModule, RouterModule, MatToolbarModule, MatProgressBarModule, MatCardModule, MatIconModule],
   selector: 'app-photo',
   templateUrl: './photo.component.html',
+  styleUrls: ['./photo.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PhotoComponent implements OnInit {
