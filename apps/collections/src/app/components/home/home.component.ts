@@ -1,36 +1,41 @@
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
-import { UnsplashService } from 'core-services';
+import { RouterModule } from '@angular/router';
 import { ICollection } from 'shared-interfaces';
-import { Store } from '@ngrx/store';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UnsplashService } from 'core-services';
 
 @Component({
+  selector: 'app-home',
   standalone: true,
   imports: [CommonModule, MatToolbarModule, MatProgressBarModule, MatCardModule, RouterModule],
-  selector: 'app-home',
   templateUrl: './home.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  private readonly store = inject(Store);
-  private readonly unsplashService = inject(UnsplashService);
-  private readonly destroyRef = inject(DestroyRef);
-
-  isLoading = false;
   collections: ICollection[] = [];
+  isLoading = true;
 
-  ngOnInit(): void {
-    this.unsplashService
-      .listCollections()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(collections => {
-        this.collections = collections?.response?.results || [];
+  constructor(private unsplashService: UnsplashService) {}
+
+  ngOnInit() {
+    this.loadCollections();
+  }
+
+  private loadCollections() {
+    this.isLoading = true;
+    this.unsplashService.listCollections().subscribe({
+      next: collections => {
+        console.log('Received collections:', collections); // Debug log
+        this.collections = collections.response?.results || [];
         this.isLoading = false;
-      });
+      },
+      error: error => {
+        console.error('Error loading collections:', error);
+        this.isLoading = false;
+      }
+    });
   }
 }

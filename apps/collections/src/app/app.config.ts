@@ -12,7 +12,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     importProvidersFrom(
       StoreModule.forRoot(reducers, { metaReducers }),
-      StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+      StoreDevtoolsModule.instrument({
+        maxAge: 25, // Retains last 25 states
+        logOnly: !isDevMode() // Restrict extension to log-only mode in production
+      })
     ),
     provideHttpClient(),
     provideAnimations()

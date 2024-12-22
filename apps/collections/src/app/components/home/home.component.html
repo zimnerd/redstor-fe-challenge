@@ -1,27 +1,41 @@
-<!-- toDo Could you optimise this piece of code? -->
-<mat-toolbar>
-  <span>Redstor FE Challenger</span>
+<!-- Improved toolbar with better semantics and accessibility -->
+<mat-toolbar role="banner">
+  <h1 class="app-title">Redstor FE Challenger</h1>
 </mat-toolbar>
 
-<!-- toDo Could you optimise this piece of code? -->
-<div class="breadcrumbs">
-  <a class="active"><span>Collections</span></a>
-</div>
+<!-- Improved breadcrumbs with proper navigation semantics -->
+<nav class="breadcrumbs" aria-label="breadcrumb">
+  <a class="active" aria-current="page">Collections</a>
+</nav>
 
 <div class="layout-container">
-  <!-- toDo Could you optimise this piece of code? -->
-  <mat-progress-bar *ngIf="isLoading"></mat-progress-bar>
+  <!-- Using Angular 17's built-in loading state management -->
+  @if (isLoading) {
+    <mat-progress-bar mode="indeterminate" aria-label="Loading collections"></mat-progress-bar>
+  }
 
+  <!-- Using new Angular 17 control flow and improved responsive layout -->
   <div class="gallery">
-    <!-- toDo Is there another way to rewrite this with new Angular 17 features? -->
-    <ng-container *ngFor="let collection of collections">
-      <!-- toDO Could you improve the styling to be responsive? -->
-      <mat-card class="gallery-item thumbnails" [routerLink]="'/collection/' + collection.id">
-        <img mat-card-image [src]="collection.cover_photo.urls.small" [alt]="collection.cover_photo.description" />
+    @if (collections.length === 0 && !isLoading) {
+      <p>No collections found.</p>
+    }
+
+    @for (collection of collections; track collection.id) {
+      <mat-card
+        class="gallery-item thumbnails"
+        [routerLink]="['/collection', collection.id]"
+        [attr.aria-label]="'View ' + collection.title + ' collection'"
+      >
+        <img
+          mat-card-image
+          [src]="collection.cover_photo.urls.small"
+          [alt]="collection.cover_photo.description || collection.title"
+          loading="lazy"
+        />
         <mat-card-content>
           <p class="title">{{ collection.title }}</p>
         </mat-card-content>
       </mat-card>
-    </ng-container>
+    }
   </div>
 </div>
