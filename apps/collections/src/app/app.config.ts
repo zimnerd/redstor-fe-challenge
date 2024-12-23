@@ -9,6 +9,7 @@ import { CollectionsEffects, collectionsReducer, metaReducers, reducers } from '
 import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { MatDialogModule } from '@angular/material/dialog';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
       StoreModule.forRoot(reducers, { metaReducers }),
       EffectsModule.forRoot([]),
       StoreDevtoolsModule.instrument({
-        maxAge: 50, // Retains last 25 states
+        maxAge: 20, // Retains last 25 states
         logOnly: !isDevMode() // Restrict extension to log-only mode in production
       })
     ),
@@ -25,6 +26,14 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideStore({ collections: collectionsReducer }),
     provideEffects(CollectionsEffects),
-    importProvidersFrom(MatDialogModule)
+    importProvidersFrom(MatDialogModule),
+    provideStoreDevtools({
+      maxAge: 25, // Retains last 25 states
+      logOnly: !isDevMode(), // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      trace: false, // Include stack trace for every dispatched action
+      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
+      connectInZone: true // If you want the store to update within NgZone
+    })
   ]
 };
