@@ -56,5 +56,11 @@ export const collectionsReducer = createReducer(
     ...state,
     error,
     loading: false
+  })),
+  on(CollectionsActions.resetCollectionState, state => ({
+    ...state,
+    photos: [],
+    loading: false,
+    error: null
   }))
 );

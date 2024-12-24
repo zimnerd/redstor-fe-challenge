@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -8,23 +8,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
 import { IPhoto } from 'shared-interfaces';
-import {
-  loadCollectionPhotos,
-  selectCollectionsLoading,
-  selectCollectionPhotos,
-  selectTotal,
-  selectCollectionTotal
-} from 'state-management';
-
-interface AppState {
-  collections: {
-    loading: boolean;
-    photos: IPhoto[];
-    total: number;
-  };
-}
+import { CollectionsFacade } from 'state-management';
 
 @Component({
   selector: 'app-collection',
@@ -42,21 +27,17 @@ interface AppState {
     MatButtonModule
   ]
 })
-export class CollectionComponent implements OnInit {
-  isLoading$: Observable<boolean>;
-  photos$: Observable<IPhoto[]>;
-  total$: Observable<number>;
-  collectionTotal$: Observable<number>;
+export class CollectionComponent implements OnInit, OnDestroy {
+  isLoading$: Observable<boolean> = this.collectionsFacade.isLoading$;
+  photos$: Observable<IPhoto[]> = this.collectionsFacade.photos$;
+  total$: Observable<number> = this.collectionsFacade.total$;
+  collectionTotal$: Observable<number> = this.collectionsFacade.collectionTotal$;
+
   pageSizeOptions = [10, 20, 30];
   perPage = 10;
   currentCollectionId: string | null = null;
 
-  constructor(private store: Store<AppState>, private route: ActivatedRoute, private router: Router) {
-    this.isLoading$ = this.store.select(selectCollectionsLoading);
-    this.photos$ = this.store.select(selectCollectionPhotos);
-    this.total$ = this.store.select(selectTotal);
-    this.collectionTotal$ = this.store.select(selectCollectionTotal);
-  }
+  constructor(private collectionsFacade: CollectionsFacade, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -67,19 +48,17 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  loadPhotos(page: number, perPage = this.perPage) {
+  ngOnDestroy(): void {
+    this.collectionsFacade.resetCollectionState();
+  }
+
+  loadPhotos(page: number, perPage = this.perPage): void {
     if (this.currentCollectionId) {
-      this.store.dispatch(
-        loadCollectionPhotos({
-          collectionId: this.currentCollectionId,
-          page,
-          perPage: Math.min(perPage, 36) // Limit max items per page
-        })
-      );
+      this.collectionsFacade.loadCollectionPhotos(this.currentCollectionId, page, perPage);
     }
   }
 
-  onPageChange(event: { pageIndex: number; pageSize: number }) {
+  onPageChange(event: { pageIndex: number; pageSize: number }): void {
     const newPage = event.pageIndex + 1;
     const newPerPage = Math.min(event.pageSize, 36);
 

@@ -28,3 +28,5 @@ export const loadCollectionPhotosSuccess = createAction(
 );
 
 export const loadCollectionPhotosFailure = createAction('[Collections] Load Collection Photos Failure', props<{ error: string }>());
+
+export const resetCollectionState = createAction('[Collections] Reset Collection State');

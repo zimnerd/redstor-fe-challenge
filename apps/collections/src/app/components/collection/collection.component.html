@@ -11,7 +11,7 @@
 <div class="layout-container">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
 
-  <div class="photos-grid" *ngIf="!(isLoading$ | async)">
+  <div class="photos-grid" *ngIf="(isLoading$ | async) === false">
     <ng-container *ngIf="(photos$ | async)?.length; else noPhotos">
       <div class="gallery">
         <ng-container *ngFor="let photo of photos$ | async">
