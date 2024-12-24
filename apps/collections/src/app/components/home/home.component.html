@@ -9,9 +9,9 @@
 </nav>
 
 <div class="layout-container">
-  <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
 
-  <div class="collections-grid" *ngIf="!(isLoading$ | async)">
+  <div class="collections-grid" *ngIf="(isLoading$ | async) === false">
     <ng-container *ngIf="(collections$ | async)?.length; else noCollections">
       <div class="gallery">
         @for (collection of collections$ | async; track collection.id) {
@@ -28,20 +28,20 @@
             />
             <mat-card-content>
               <p class="title">{{ collection.title }}</p>
+              @if (collection.preview_photos?.length) {
+                <div class="preview-grid">
+                  @for (photo of collection.preview_photos?.slice(0, 4); track photo.id) {
+                    <img
+                      [src]="photo.urls.thumb"
+                      [alt]="collection.title"
+                      class="preview-thumb"
+                      tabindex="0"
+                      role="button"
+                    >
+                  }
+                </div>
+              }
             </mat-card-content>
-            @if (collection.preview_photos?.length) {
-              <div class="preview-grid">
-                @for (photo of collection.preview_photos?.slice(0, 4); track photo.id) {
-                  <img
-                    [src]="photo.urls.thumb"
-                    [alt]="collection.title"
-                    class="preview-thumb"
-                    tabindex="0"
-                    role="button"
-                  >
-                }
-              </div>
-            }
           </mat-card>
         }
       </div>
@@ -58,15 +58,13 @@
     </ng-template>
   </div>
 
-  <!-- Only show pagination if we have results -->
-  <div class="pagination-container" *ngIf="(collections$ | async)?.length">
-    <mat-paginator
-      [length]="totalItems"
-      [pageSize]="perPage"
-      [pageSizeOptions]="pageSizeOptions"
-      [pageIndex]="(currentPage$ | async) || 0"
-      (page)="onPageChange($event)"
-      aria-label="Select page">
-    </mat-paginator>
-  </div>
+  <mat-paginator
+    *ngIf="(collections$ | async)?.length"
+    [length]="(total$ | async) || 0"
+    [pageSize]="perPage"
+    [pageSizeOptions]="pageSizeOptions"
+    [showFirstLastButtons]="true"
+    (page)="onPageChange($event)"
+    aria-label="Select page">
+  </mat-paginator>
 </div>

@@ -1,21 +1,39 @@
-import { Injectable, Signal, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loadCollections } from './collections.actions';
-import { ICollection } from 'shared-interfaces';
-import { createSelector } from '@ngrx/store';
-import { selectAllCollections, selectCollectionsState } from './collections.selectors';
+import { loadCollections, loadCollectionPhotos, resetCollectionState } from './collections.actions';
+import { ICollection, IPhoto } from 'shared-interfaces';
+import * as CollectionsSelectors from './collections.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsFacade {
   private readonly store: Store = inject(Store);
 
-  readonly collections$: Signal<ICollection[]> = this.store.selectSignal(selectAllCollections);
+  // Selectors as observables
+  readonly collections$ = this.store.select(CollectionsSelectors.selectAllCollections);
+  readonly isLoading$ = this.store.select(CollectionsSelectors.selectCollectionsLoading);
+  readonly photos$ = this.store.select(CollectionsSelectors.selectCollectionPhotos);
+  readonly total$ = this.store.select(CollectionsSelectors.selectTotal);
+  readonly collectionTotal$ = this.store.select(CollectionsSelectors.selectCollectionTotal);
+  readonly error$ = this.store.select(CollectionsSelectors.selectCollectionsError);
+  readonly currentPage$ = this.store.select(CollectionsSelectors.selectCurrentPage);
+  readonly totalPages$ = this.store.select(CollectionsSelectors.selectTotalPages);
 
-  loadCollections() {
-    this.store.dispatch(loadCollections({ page: 1, perPage: 10 }));
+  // Actions
+  loadCollections(page = 1, perPage = 10) {
+    this.store.dispatch(loadCollections({ page, perPage }));
   }
 
-  selectTotalPages = createSelector(selectCollectionsState, state => state.totalPages);
+  loadCollectionPhotos(collectionId: string, page: number, perPage: number): void {
+    this.store.dispatch(
+      loadCollectionPhotos({
+        collectionId,
+        page,
+        perPage: Math.min(perPage, 36)
+      })
+    );
+  }
 
-  selectCurrentPage = createSelector(selectCollectionsState, state => state.currentPage);
+  resetCollectionState(): void {
+    this.store.dispatch(resetCollectionState());
+  }
 }

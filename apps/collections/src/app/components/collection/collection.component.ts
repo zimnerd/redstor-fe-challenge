@@ -28,10 +28,10 @@ import { CollectionsFacade } from 'state-management';
   ]
 })
 export class CollectionComponent implements OnInit, OnDestroy {
-  isLoading$: Observable<boolean> = this.collectionsFacade.isLoading$;
-  photos$: Observable<IPhoto[]> = this.collectionsFacade.photos$;
-  total$: Observable<number> = this.collectionsFacade.total$;
-  collectionTotal$: Observable<number> = this.collectionsFacade.collectionTotal$;
+  readonly isLoading$ = this.collectionsFacade.isLoading$;
+  readonly photos$ = this.collectionsFacade.photos$;
+  readonly total$ = this.collectionsFacade.total$;
+  readonly collectionTotal$ = this.collectionsFacade.collectionTotal$;
 
   pageSizeOptions = [10, 20, 30];
   perPage = 10;
