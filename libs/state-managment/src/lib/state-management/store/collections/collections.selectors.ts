@@ -15,4 +15,6 @@ export const selectCollectionsError = createSelector(selectCollectionsState, sta
 
 export const selectTotal = createSelector(selectCollectionsState, state => state.total || 0);
 
+export const selectCollectionTotal = createSelector(selectCollectionsState, state => state.collectionTotal || 0);
+
 export const selectCollectionPhotos = createSelector(selectCollectionsState, (state: ICollectionsState) => state.photos);

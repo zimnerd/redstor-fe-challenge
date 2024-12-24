@@ -10,7 +10,13 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { IPhoto } from 'shared-interfaces';
-import { loadCollectionPhotos, selectCollectionsLoading, selectCollectionPhotos, selectTotal } from 'state-management';
+import {
+  loadCollectionPhotos,
+  selectCollectionsLoading,
+  selectCollectionPhotos,
+  selectTotal,
+  selectCollectionTotal
+} from 'state-management';
 
 interface AppState {
   collections: {
@@ -40,6 +46,7 @@ export class CollectionComponent implements OnInit {
   isLoading$: Observable<boolean>;
   photos$: Observable<IPhoto[]>;
   total$: Observable<number>;
+  collectionTotal$: Observable<number>;
   pageSizeOptions = [10, 20, 30];
   perPage = 10;
   currentCollectionId: string | null = null;
@@ -48,6 +55,7 @@ export class CollectionComponent implements OnInit {
     this.isLoading$ = this.store.select(selectCollectionsLoading);
     this.photos$ = this.store.select(selectCollectionPhotos);
     this.total$ = this.store.select(selectTotal);
+    this.collectionTotal$ = this.store.select(selectCollectionTotal);
   }
 
   ngOnInit(): void {

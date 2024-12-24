@@ -37,4 +37,5 @@ export interface ICollectionsState {
   perPage?: number;
   totalPages?: number;
   total?: number;
+  collectionTotal?: number;
 }

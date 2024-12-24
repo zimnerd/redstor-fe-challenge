@@ -44,7 +44,7 @@
   <!-- Only show pagination if we have photos -->
   <mat-paginator
     *ngIf="(photos$ | async)?.length"
-    [length]="total$ | async"
+    [length]="(collectionTotal$ | async) || 0"
     [pageSize]="perPage"
     [pageSizeOptions]="pageSizeOptions"
     [showFirstLastButtons]="true"

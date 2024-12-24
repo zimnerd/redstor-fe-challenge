@@ -46,10 +46,11 @@ export const collectionsReducer = createReducer(
     loading: true,
     error: null
   })),
-  on(CollectionsActions.loadCollectionPhotosSuccess, (state, { photos }) => ({
+  on(CollectionsActions.loadCollectionPhotosSuccess, (state, { photos, total }) => ({
     ...state,
     photos,
-    loading: false
+    loading: false,
+    collectionTotal: total
   })),
   on(CollectionsActions.loadCollectionPhotosFailure, (state, { error }) => ({
     ...state,
