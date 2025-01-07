@@ -41,4 +41,24 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
     expect(component.isLoading$).toBeDefined();
   });
+
+  it('should handle page change', () => {
+    const loadCollectionsSpy = jest.spyOn(mockCollectionsFacade, 'loadCollections');
+    component.perPage = 20; // Set initial perPage to match the event
+    const event = { pageIndex: 1, pageSize: 20 };
+
+    component.onPageChange(event);
+
+    expect(loadCollectionsSpy).toHaveBeenCalledWith(2, 20);
+  });
+
+  it('should reset to first page if page size changes', () => {
+    const loadCollectionsSpy = jest.spyOn(mockCollectionsFacade, 'loadCollections');
+    component.perPage = 10; // Assume initial perPage is 10
+    const event = { pageIndex: 1, pageSize: 20 };
+
+    component.onPageChange(event);
+
+    expect(loadCollectionsSpy).toHaveBeenCalledWith(1, 20);
+  });
 });
