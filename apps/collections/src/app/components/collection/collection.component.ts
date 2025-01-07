@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { IPhoto } from 'shared-interfaces';
 import { CollectionsFacade } from 'state-management';
 

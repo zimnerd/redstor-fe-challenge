@@ -1,5 +1,8 @@
 <mat-toolbar color="primary">
-  <span>Redstor FE Challenger</span>
+  <a routerLink="/">
+  <img src="assets/logo.png" alt="Logo" style="height: 40px; margin-right: 10px;" />
+  <span>FE Challenge</span>
+  </a>
 </mat-toolbar>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb navigation">
@@ -20,14 +23,14 @@
       <mat-card-header>
         <img
           mat-card-avatar
-          [src]="photo.user?.profile_image?.medium"
-          [alt]="photo.user?.name + '\'s profile picture'"
-          *ngIf="photo.user?.profile_image"
+          [src]="photo.user.profile_image.medium"
+          [alt]="photo.user.name + '\'s profile picture'"
+          *ngIf="photo.user.profile_image"
         />
-        <mat-card-title>{{ photo.user?.first_name }} {{ photo.user?.last_name }}</mat-card-title>
-        <mat-card-subtitle *ngIf="photo.user?.location">
+        <mat-card-title>{{ photo.user.first_name }} {{ photo.user.last_name }}</mat-card-title>
+        <mat-card-subtitle *ngIf="photo.user.location">
           <mat-icon inline>where_to_vote</mat-icon>
-          {{ photo.user?.location }}
+          {{ photo.user.location }}
         </mat-card-subtitle>
       </mat-card-header>
 
@@ -35,7 +38,7 @@
         <div>
           <div>
             <p *ngIf="photo.description">
-              {{ photo.description?.charAt(0)?.toUpperCase() }}{{ photo.description?.slice(1) }}
+              {{ photo.description.charAt(0).toUpperCase() }}{{ photo.description.slice(1) }}
             </p>
           </div>
           <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="end">
@@ -51,8 +54,8 @@
 
       <img
         mat-card-image
-        *ngIf="photo.urls?.full"
-        [src]="photo.urls?.full"
+        *ngIf="photo.urls.full"
+        [src]="photo.urls.full"
         [alt]="photo.alt_description || 'Photo'"
       />
     </mat-card>

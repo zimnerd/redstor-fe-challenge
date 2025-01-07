@@ -6,17 +6,17 @@ import * as CollectionsSelectors from './collections.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsFacade {
-  private readonly store: Store = inject(Store);
+  private store: Store = inject(Store);
 
   // Selectors as observables
-  readonly collections$ = this.store.select(CollectionsSelectors.selectAllCollections);
-  readonly isLoading$ = this.store.select(CollectionsSelectors.selectCollectionsLoading);
-  readonly photos$ = this.store.select(CollectionsSelectors.selectCollectionPhotos);
-  readonly total$ = this.store.select(CollectionsSelectors.selectTotal);
-  readonly collectionTotal$ = this.store.select(CollectionsSelectors.selectCollectionTotal);
-  readonly error$ = this.store.select(CollectionsSelectors.selectCollectionsError);
-  readonly currentPage$ = this.store.select(CollectionsSelectors.selectCurrentPage);
-  readonly totalPages$ = this.store.select(CollectionsSelectors.selectTotalPages);
+  collections$ = this.store.select(CollectionsSelectors.selectAllCollections);
+  isLoading$ = this.store.select(CollectionsSelectors.selectCollectionsLoading);
+  photos$ = this.store.select(CollectionsSelectors.selectCollectionPhotos);
+  total$ = this.store.select(CollectionsSelectors.selectTotal);
+  collectionTotal$ = this.store.select(CollectionsSelectors.selectCollectionTotal);
+  error$ = this.store.select(CollectionsSelectors.selectCollectionsError);
+  currentPage$ = this.store.select(CollectionsSelectors.selectCurrentPage);
+  totalPages$ = this.store.select(CollectionsSelectors.selectTotalPages);
 
   // Actions
   loadCollections(page = 1, perPage = 10) {

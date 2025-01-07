@@ -20,13 +20,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PhotoComponent implements OnInit {
-  private readonly unsplashService = inject(UnsplashService);
-  private readonly router = inject(Router);
-  private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly destroyRef = inject(DestroyRef);
+  private unsplashService = inject(UnsplashService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
 
-  readonly photo$: BehaviorSubject<IPhoto> = new BehaviorSubject<IPhoto>({} as IPhoto);
-  readonly isLoading$: Observable<boolean> = this.photo$.pipe(map(p => !p));
+  photo$: BehaviorSubject<IPhoto> = new BehaviorSubject<IPhoto>({} as IPhoto);
+  isLoading$: Observable<boolean> = this.photo$.pipe(map(p => !p));
   collectionId: string | null = null;
 
   ngOnInit(): void {
