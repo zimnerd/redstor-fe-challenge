@@ -1,38 +1,70 @@
-import * as fromCollections from './collections.reducer';
-import * as CollectionsSelectors from './collections.selectors';
-import { Collection } from '@shared-interfaces';
+import {
+  selectCollectionsState,
+  selectAllCollections,
+  selectCollectionsLoading,
+  selectCurrentPage,
+  selectTotalPages,
+  selectCollectionsError,
+  selectTotal,
+  selectCollectionTotal,
+  selectCollectionPhotos
+} from './collections.selectors';
+import { ICollectionsState } from 'shared-interfaces';
 
 describe('Collections Selectors', () => {
-  const mockCollection: Collection = {
-    id: '1',
-    name: 'Test Collection',
-    items: []
-  };
-
-  const initialState: fromCollections.State = {
-    collections: [mockCollection],
-    selectedCollection: null,
+  const initialState: ICollectionsState = {
+    collections: [],
     loading: false,
-    error: null
+    currentPage: 1,
+    totalPages: 5,
+    error: null,
+    total: 100,
+    collectionTotal: 50,
+    photos: []
   };
 
-  it('should select collections', () => {
-    const result = CollectionsSelectors.selectCollections.projector(initialState);
-    expect(result).toEqual([mockCollection]);
+  it('should select the collections state', () => {
+    const result = selectCollectionsState.projector(initialState);
+    expect(result).toEqual(initialState);
   });
 
-  it('should select loading state', () => {
-    const result = CollectionsSelectors.selectLoading.projector(initialState);
-    expect(result).toBeFalse();
+  it('should select all collections', () => {
+    const result = selectAllCollections.projector(initialState);
+    expect(result).toEqual(initialState.collections);
   });
 
-  it('should select selected collection', () => {
-    const result = CollectionsSelectors.selectSelectedCollection.projector(initialState);
-    expect(result).toBeNull();
+  it('should select collections loading', () => {
+    const result = selectCollectionsLoading.projector(initialState);
+    expect(result).toBe(initialState.loading);
   });
 
-  it('should select error state', () => {
-    const result = CollectionsSelectors.selectError.projector(initialState);
-    expect(result).toBeNull();
+  it('should select the current page', () => {
+    const result = selectCurrentPage.projector(initialState);
+    expect(result).toBe(initialState.currentPage);
+  });
+
+  it('should select the total pages', () => {
+    const result = selectTotalPages.projector(initialState);
+    expect(result).toBe(initialState.totalPages);
+  });
+
+  it('should select collections error', () => {
+    const result = selectCollectionsError.projector(initialState);
+    expect(result).toBe(initialState.error);
+  });
+
+  it('should select the total', () => {
+    const result = selectTotal.projector(initialState);
+    expect(result).toBe(initialState.total);
+  });
+
+  it('should select the collection total', () => {
+    const result = selectCollectionTotal.projector(initialState);
+    expect(result).toBe(initialState.collectionTotal);
+  });
+
+  it('should select collection photos', () => {
+    const result = selectCollectionPhotos.projector(initialState);
+    expect(result).toEqual(initialState.photos);
   });
 });
