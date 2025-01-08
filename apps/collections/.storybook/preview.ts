@@ -20,8 +20,13 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { applicationConfig, StoryFn } from '@storybook/angular';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { of } from 'rxjs';
+
+import { HomeComponent } from '../src/app/components/home/home.component';
+
+// Define routes with a wildcard route
+const routes: Routes = [{ path: '**', component: HomeComponent }];
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -34,7 +39,7 @@ export const decorators = [
         HttpClientModule,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
-        RouterModule.forRoot([]),
+        RouterModule.forRoot(routes), // Use the defined routes
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
