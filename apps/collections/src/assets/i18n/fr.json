@@ -1,0 +1,13 @@
+{
+  "HELLO": "Bonjour",
+  "WELCOME": "Bienvenue dans l'application de collections",
+  "FE_CHALLENGE": "Défi Front-End",
+  "COLLECTIONS": "Collections",
+  "PHOTOS": "Fotos",
+  "COLLECTION": "Collection",
+  "PHOTO": "Foto",
+  "language": {
+    "english": "Anglais",
+    "french": "Français"
+  }
+}

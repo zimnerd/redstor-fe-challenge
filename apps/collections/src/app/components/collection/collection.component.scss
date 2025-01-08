@@ -84,3 +84,11 @@ mat-progress-bar {
 .gallery-item:hover .photo-info {
   background: rgba(0, 0, 0, 0.05);
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+select {
+  margin-left: auto;
+}

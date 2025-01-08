@@ -10,6 +10,14 @@ import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { MatDialogModule } from '@angular/material/dialog';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+// Factory function for the translation loader
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -34,6 +42,13 @@ export const appConfig: ApplicationConfig = {
       trace: false, // Include stack trace for every dispatched action
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true // If you want the store to update within NgZone
-    })
+    }),
+    ...(TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }).providers ?? [])
   ]
 };

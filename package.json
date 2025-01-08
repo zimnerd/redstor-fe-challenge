@@ -30,7 +30,9 @@
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
     "unsplash-js": "^7.0.18",
-    "zone.js": "~0.14.2"
+    "zone.js": "~0.14.2",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.0.3",

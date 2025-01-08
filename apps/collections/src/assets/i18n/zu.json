@@ -1,0 +1,13 @@
+{
+  "HELLO": "Sawubona",
+  "WELCOME": "Welcome to the collections app",
+  "FE_CHALLENGE": "Inselelo ye-FE",
+  "COLLECTIONS": "Imiqoqo",
+  "COLLECTION": "Umqoqo",
+  "PHOTOS": "Izithombe",
+  "PHOTO": "Isithombe",
+  "language": {
+    "english": "English",
+    "zu": "Zulu"
+  }
+}

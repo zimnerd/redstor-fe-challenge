@@ -1,0 +1,13 @@
+{
+  "HELLO": "Hello",
+  "WELCOME": "Welcome to the collections app",
+  "FE_CHALLENGE": "FE Challenge",
+  "COLLECTIONS": "Collections",
+  "PHOTOS": "Photos",
+  "COLLECTION": "Collection",
+  "PHOTO": "Photo",
+  "language": {
+    "english": "English",
+    "spanish": "Spanish"
+  }
+}

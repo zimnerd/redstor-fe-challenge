@@ -1,0 +1,13 @@
+{
+  "HELLO": "Hallo",
+  "WELCOME": "Willkommen in der Sammlungs-App",
+  "FE_CHALLENGE": "FE-Herausforderung",
+  "COLLECTIONS": "Sammlungen",
+  "PHOTOS": "Fotos",
+  "COLLECTION": "Sammlung",
+  "PHOTO": "Foto",
+  "language": {
+    "english": "Englisch",
+    "german": "Deutsch"
+  }
+}

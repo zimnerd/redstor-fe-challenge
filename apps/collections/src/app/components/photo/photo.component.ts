@@ -9,11 +9,22 @@ import { UnsplashService } from 'core-services';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { IPhoto } from 'shared-interfaces';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 // toDo Is there a way to improve the rendering strategy in this component?
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatProgressBarModule, MatCardModule, MatIconModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatCardModule,
+    MatIconModule,
+    NavbarComponent,
+    TranslateModule
+  ],
   selector: 'app-photo',
   templateUrl: './photo.component.html',
   styleUrls: ['./photo.component.scss'],

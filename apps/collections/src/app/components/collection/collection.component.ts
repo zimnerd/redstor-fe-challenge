@@ -9,7 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { IPhoto } from 'shared-interfaces';
 import { CollectionsFacade } from 'state-management';
-
+import { TranslateService } from '@ngx-translate/core';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -23,7 +25,9 @@ import { CollectionsFacade } from 'state-management';
     MatIconModule,
     RouterModule,
     MatPaginatorModule,
-    MatButtonModule
+    MatButtonModule,
+    NavbarComponent,
+    TranslateModule
   ]
 })
 export class CollectionComponent implements OnInit, OnDestroy {
@@ -36,7 +40,12 @@ export class CollectionComponent implements OnInit, OnDestroy {
   perPage = 10;
   currentCollectionId: string | null = null;
 
-  constructor(private collectionsFacade: CollectionsFacade, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private collectionsFacade: CollectionsFacade,
+    private route: ActivatedRoute,
+    private router: Router,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -73,5 +82,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     if (this.currentCollectionId) {
       this.router.navigate(['collection', this.currentCollectionId, 'photo', photo.id]);
     }
+  }
+
+  onLanguageChange(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const language = selectElement.value;
+    this.translate.use(language);
   }
 }

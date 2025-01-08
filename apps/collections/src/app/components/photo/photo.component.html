@@ -1,18 +1,13 @@
-<mat-toolbar color="primary">
-  <a routerLink="/">
-  <img src="assets/logo.png" alt="Logo" style="height: 40px; margin-right: 10px;" />
-  </a>
-  <span>FE Challenge</span>
-</mat-toolbar>
+<app-navbar></app-navbar>
 
 <nav class="breadcrumbs" aria-label="Breadcrumb navigation">
-  <a routerLink="/"><span>Collections</span></a>
+  <a routerLink="/"><span>{{ 'COLLECTIONS' | translate }}</span></a>
   <span>></span>
   <a [routerLink]="['/collection', collectionId]" role="link" tabindex="0">
-    <span>Collection</span>
+    <span>{{ 'COLLECTION' | translate }}</span>
   </a>
   <span>></span>
-  <a class="active"><span>Photo</span></a>
+  <a class="active"><span>{{ 'PHOTO' | translate }}</span></a>
 </nav>
 
 <div class="layout-container">

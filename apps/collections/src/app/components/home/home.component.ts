@@ -6,13 +6,24 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { CollectionsFacade } from 'state-management';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatProgressBarModule, MatPaginatorModule, RouterModule, MatToolbarModule]
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatPaginatorModule,
+    RouterModule,
+    MatToolbarModule,
+    NavbarComponent,
+    TranslateModule
+  ]
 })
 export class HomeComponent implements OnInit {
   readonly collections$ = this.collectionsFacade.collections$;
