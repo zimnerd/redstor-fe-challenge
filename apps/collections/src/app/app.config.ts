@@ -10,7 +10,7 @@ import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { MatDialogModule } from '@angular/material/dialog';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateCompiler, TranslateFakeCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -48,6 +48,10 @@ export const appConfig: ApplicationConfig = {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
+      },
+      compiler: {
+        provide: TranslateCompiler,
+        useFactory: () => new TranslateFakeCompiler()
       }
     }).providers ?? [])
   ]
