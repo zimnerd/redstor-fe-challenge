@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { CollectionsFacade } from './collections.facade';
+
 import * as CollectionsSelectors from './collections.selectors';
 import { loadCollections, loadCollectionPhotos, resetCollectionState } from './collections.actions';
-
+import { CollectionsFacade } from './collections.facade';
 describe('CollectionsFacade', () => {
   let facade: CollectionsFacade;
   let store: MockStore;
