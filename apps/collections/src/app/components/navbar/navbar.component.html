@@ -4,11 +4,14 @@
   </a>
   <span>{{ 'FE_CHALLENGE' | translate }}</span>
   <span class="spacer"></span>
-  <select (change)="onLanguageChange($event)">
-    <option value="en">English</option>
-    <option value="es">Spanish</option>
-    <option value="de">German</option>
-    <option value="fr">French</option>
-    <option value="zu">Zulu</option>
-  </select>
+  <mat-form-field appearance="fill">
+    <mat-label>Language</mat-label>
+    <mat-select [(value)]="selectedLanguage" (selectionChange)="onLanguageChange($event)">
+      <mat-option value="en">English</mat-option>
+      <mat-option value="es">Spanish</mat-option>
+      <mat-option value="de">German</mat-option>
+      <mat-option value="fr">French</mat-option>
+      <mat-option value="zu">Zulu</mat-option>
+    </mat-select>
+  </mat-form-field>
 </mat-toolbar>

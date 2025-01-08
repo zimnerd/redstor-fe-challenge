@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-navbar',
@@ -12,11 +12,14 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  constructor(private translate: TranslateService) {}
+  selectedLanguage = 'en';
 
-  onLanguageChange(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const language = selectElement.value;
-    this.translate.use(language);
+  constructor(private translate: TranslateService) {
+    this.translate.use(this.selectedLanguage);
+  }
+
+  onLanguageChange(event: MatSelectChange) {
+    const selectedLanguage = event.value;
+    this.translate.use(selectedLanguage);
   }
 }
