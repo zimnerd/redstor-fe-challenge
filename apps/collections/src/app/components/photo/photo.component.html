@@ -1,14 +1,8 @@
-<app-navbar></app-navbar>
-
-<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
-  <a routerLink="/"><span>{{ 'COLLECTIONS' | translate }}</span></a>
-  <span>›</span>
-  <a [routerLink]="['/collection', collectionId]" role="link" tabindex="0">
-    <span>{{ 'COLLECTION' | translate }}</span>
-  </a>
-  <span>›</span>
-  <a class="active"><span>{{ 'PHOTO' | translate }}</span></a>
-</nav>
+<app-navbar [breadcrumbs]="[
+  { label: 'COLLECTIONS', url: '/' },
+  { label: 'COLLECTION', url: '/collection/' + collectionId },
+  { label: 'PHOTO' }
+]"></app-navbar>
 
 <div class="layout-container">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>

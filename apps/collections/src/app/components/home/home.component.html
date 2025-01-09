@@ -1,8 +1,4 @@
-<app-navbar></app-navbar>
-<nav class="breadcrumbs" aria-label="breadcrumb">
-  <a class="active" aria-current="page">{{ 'COLLECTIONS' | translate }}</a>
-</nav>
-
+<app-navbar [breadcrumbs]="[{ label: 'COLLECTIONS' }]"></app-navbar>
 <div class="layout-container">
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
 

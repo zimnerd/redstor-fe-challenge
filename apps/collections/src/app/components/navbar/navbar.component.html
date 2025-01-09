@@ -6,7 +6,7 @@
   <span class="spacer"></span>
   <mat-form-field appearance="fill">
     <mat-label>Language</mat-label>
-    <mat-select [(value)]="selectedLanguage" (selectionChange)="onLanguageChange($event)">
+    <mat-select [value]="selectedLanguage()" (selectionChange)="onLanguageChange($event)">
       <mat-option value="en">English</mat-option>
       <mat-option value="es">Spanish</mat-option>
       <mat-option value="de">German</mat-option>
@@ -15,3 +15,11 @@
     </mat-select>
   </mat-form-field>
 </mat-toolbar>
+
+<nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+  <ng-container *ngFor="let breadcrumb of breadcrumbs; let last = last">
+    <a *ngIf="!last" [routerLink]="breadcrumb.url" [attr.aria-label]="'Go to ' + breadcrumb.label">{{ breadcrumb.label | translate }}</a>
+    <span *ngIf="!last" aria-hidden="true">›</span>
+    <span *ngIf="last" class="active">{{ breadcrumb.label | translate }}</span>
+  </ng-container>
+</nav>
