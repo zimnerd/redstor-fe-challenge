@@ -14,10 +14,10 @@
           mat-card-avatar
           [src]="photo.user.profile_image.medium"
           [alt]="photo.user.name + '\'s profile picture'"
-          *ngIf="photo.user.profile_image"
+          *ngIf="photo.user?.profile_image"
         />
-        <mat-card-title>{{ photo.user.first_name }} {{ photo.user.last_name }}</mat-card-title>
-        <mat-card-subtitle *ngIf="photo.user.location">
+        <mat-card-title *ngIf="photo.user">{{ photo.user.first_name }} {{ photo.user.last_name }}</mat-card-title>
+        <mat-card-subtitle *ngIf="photo.user?.location">
           <mat-icon inline>where_to_vote</mat-icon>
           {{ photo.user.location }}
         </mat-card-subtitle>
@@ -27,7 +27,7 @@
         <div>
           <div>
             <p *ngIf="photo.description">
-              {{ photo.description.charAt(0).toUpperCase() }}{{ photo.description.slice(1) }}
+              {{ photo.description | capitalize }}
             </p>
           </div>
           <div fxLayout="row" fxLayoutGap="12px" fxLayoutAlign="end">
@@ -43,7 +43,7 @@
 
       <img
         mat-card-image
-        *ngIf="photo.urls.full"
+        *ngIf="photo.urls"
         [src]="photo.urls.full"
         [alt]="photo.alt_description || 'Photo'"
       />

@@ -11,6 +11,7 @@ import { IPhoto } from 'shared-interfaces';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { UtilsModule } from 'libs/utils/src/lib/utils/utils.module';
 
 // toDo Is there a way to improve the rendering strategy in this component?
 @Component({
@@ -23,7 +24,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCardModule,
     MatIconModule,
     NavbarComponent,
-    TranslateModule
+    TranslateModule,
+    UtilsModule
   ],
   selector: 'app-photo',
   templateUrl: './photo.component.html',
