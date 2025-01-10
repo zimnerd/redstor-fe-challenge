@@ -1,61 +1,64 @@
 <app-navbar [breadcrumbs]="[{ label: 'COLLECTIONS' }]"></app-navbar>
 <div class="layout-container">
-  <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
+  @if (isLoading$ | async) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
 
-  <div class="collections-grid" *ngIf="(isLoading$ | async) === false">
-    <ng-container *ngIf="(collections$ | async)?.length; else noCollections">
-      <div class="gallery">
-        @for (collection of collections$ | async; track collection.id) {
-          <mat-card
-            class="gallery-item thumbnails"
-            [routerLink]="['/collection', collection.id]"
-            [attr.aria-label]="'View ' + collection.title + ' collection'"
-          >
-            <img
-              mat-card-image
-              [src]="collection.cover_photo.urls.small"
-              [alt]="collection.cover_photo.description || collection.title"
-              loading="lazy"
-            />
+  @if ((isLoading$ | async) === false) {
+    <div class="collections-grid">
+      @if ((collections$ | async)?.length) {
+        <div class="gallery">
+          @for (collection of collections$ | async; track collection.id) {
+            <mat-card
+              class="gallery-item thumbnails"
+              [routerLink]="['/collection', collection.id]"
+              [attr.aria-label]="'View ' + collection.title + ' collection'"
+            >
+              <img
+                mat-card-image
+                [src]="collection.cover_photo.urls.small"
+                [alt]="collection.cover_photo.description || collection.title"
+                loading="lazy"
+              />
+              <mat-card-content>
+                <p class="title">{{ collection.title }}</p>
+                @if (collection.preview_photos?.length) {
+                  <div class="preview-grid">
+                    @for (photo of collection.preview_photos?.slice(0, 4); track photo.id) {
+                      <img
+                        [src]="photo.urls.thumb"
+                        [alt]="collection.title"
+                        class="preview-thumb"
+                        tabindex="0"
+                        role="button"
+                      >
+                    }
+                  </div>
+                }
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      } @else {
+        <div class="no-results">
+          <mat-card>
             <mat-card-content>
-              <p class="title">{{ collection.title }}</p>
-              @if (collection.preview_photos?.length) {
-                <div class="preview-grid">
-                  @for (photo of collection.preview_photos?.slice(0, 4); track photo.id) {
-                    <img
-                      [src]="photo.urls.thumb"
-                      [alt]="collection.title"
-                      class="preview-thumb"
-                      tabindex="0"
-                      role="button"
-                    >
-                  }
-                </div>
-              }
+              <p>No collections found. Please try adjusting your search or check back later.</p>
             </mat-card-content>
           </mat-card>
-        }
-      </div>
-    </ng-container>
+        </div>
+      }
+    </div>
+  }
 
-    <ng-template #noCollections>
-      <div class="no-results">
-        <mat-card>
-          <mat-card-content>
-            <p>No collections found. Please try adjusting your search or check back later.</p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </ng-template>
-  </div>
-
-  <mat-paginator
-    *ngIf="(collections$ | async)?.length"
-    [length]="(total$ | async) || 0"
-    [pageSize]="perPage"
-    [pageSizeOptions]="pageSizeOptions"
-    [showFirstLastButtons]="true"
-    (page)="onPageChange($event)"
-    aria-label="Select page">
-  </mat-paginator>
+  @if ((collections$ | async)?.length) {
+    <mat-paginator
+      [length]="(total$ | async) || 0"
+      [pageSize]="perPage"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="true"
+      (page)="onPageChange($event)"
+      aria-label="Select page">
+    </mat-paginator>
+  }
 </div>
